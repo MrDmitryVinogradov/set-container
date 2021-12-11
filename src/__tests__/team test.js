@@ -12,37 +12,29 @@ test('should add', () => {
   expect(team.members.size).toBe(1)
 });
 
-test('should throw1', () => {
+test('should throw on re-adding', () => {
   const team = new Team();
   team.add(hero);
-  expect(() => toThrow('Unable to add'));
+  expect(() => { 
+    team.add(hero)
+  }).toThrow()
 });
 
-test('should throw2', () => {
+test('should throw on wrong instance', () => {
   const team = new Team();
-  expect(() => team.add('hero').toThrow('Unable to add'))
+  expect(() => { 
+    team.add('hero')
+  }).toThrow()
 });
 
-test ('should add all', () => {
+test('should add all', () => {
   const team = new Team();
-  team.addAll(hero, hero1, hero2);
-  expect(team.members.size).toBe(3)
-});
-
-test ('should not duplicate', () => {
-  const team = new Team();
-  team.addAll(hero, hero1, hero2);
-  expect(() => team.add(hero).toThrow('Unable to add'))
+  team.addAll(hero, hero1, hero2, hero);
+  expect(team.members.size).toBe(3);
 });
 
 test ('should transform to array', () => {
   const team = new Team();
-  team.add(hero);
- 
-  expect(() => team.toArray().toEqual([
-    {
-      name: 'User',
-      health: 100,
-      level: 1,
-    }]))
-})
+  team.addAll(hero, hero1, hero2);
+  expect(Array.isArray(team.toArray())).toBe(true);
+});
